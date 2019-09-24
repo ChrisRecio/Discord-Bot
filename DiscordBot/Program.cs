@@ -2,6 +2,7 @@
 using DiscordBot.Discord;
 using DiscordBot.Discord.Entities;
 using System.Threading.Tasks;
+using DiscordBot.Storage;
 
 namespace DiscordBot
 {
@@ -12,13 +13,21 @@ namespace DiscordBot
             // Register Dependency Injections
             Unity.RegisterTypes();
 
-            var BotConfig = new BotConfig
-            {
-                
-            };
-
+            var storage = Unity.Resolve<IDataStorage>();
             var connection = Unity.Resolve<Connection>();
-            await connection.ConnectAsync(BotConfig);
+
+            try
+            {
+                await connection.ConnectAsync(new BotConfig
+                {
+                    Token = storage.RestoreObject<string>("Config/BotToken")
+                });
+                Console.WriteLine("Connected Successfully");
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Failed To Connect");
+            }
 
             Console.ReadKey();
         }

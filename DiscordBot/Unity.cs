@@ -1,5 +1,10 @@
-﻿using Unity;
-using Unity.Lifetime;
+﻿using System;
+using Discord.WebSocket;
+using DiscordBot.Discord;
+using DiscordBot.Storage;
+using DiscordBot.Storage.Implementations;
+using Unity;
+using Unity.Injection;
 using Unity.Resolution;
 
 namespace DiscordBot
@@ -21,15 +26,16 @@ namespace DiscordBot
         public static void RegisterTypes()
         {
             _container = new UnityContainer();
+            _container.RegisterSingleton<IDataStorage, JsonStorage>();
             _container.RegisterSingleton<ILogger, Logger>();
+            _container.RegisterType<DiscordSocketClient>(new InjectionFactory(i => SocketConfig.GetDefault()));
+            _container.RegisterSingleton<DiscordSocketClient>(new InjectionConstructor(typeof(DiscordSocketConfig)));
             _container.RegisterSingleton<Discord.Connection>();
         }
 
         public static T Resolve<T>()
         {
-            
-            //return (T)Container.Resolve(typeof(T),"a");
-            //return (T)Container.Resolve(typeof(T), string.Empty, new PropertyOverride("a", T));
+            return (T)Container.Resolve(typeof(T), string.Empty, new CompositeResolverOverride());
         }
     }
 }
