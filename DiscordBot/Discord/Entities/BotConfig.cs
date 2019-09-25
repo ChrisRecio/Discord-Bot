@@ -1,6 +1,4 @@
-﻿using Discord.WebSocket;
-
-namespace DiscordBot.Discord.Entities
+﻿namespace DiscordBot.Discord.Entities
 {
     public class BotConfig
     {

@@ -1,6 +1,8 @@
 ﻿using System;
+using Discord.Commands;
 using Discord.WebSocket;
 using DiscordBot.Discord;
+using DiscordBot.Discord.Entities;
 using DiscordBot.Storage;
 using DiscordBot.Storage.Implementations;
 using Unity;

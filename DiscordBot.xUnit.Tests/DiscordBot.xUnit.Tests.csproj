@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="JetBrains.DotMemoryUnit" Version="3.0.20171219.105559" />
     <PackageReference Include="xunit" Version="*" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="*" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
@@ -12,6 +13,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DiscordBot\DiscordBot.csproj"/>
+    <ProjectReference Include="..\DiscordBot\DiscordBot.csproj" />
   </ItemGroup>
 </Project>
