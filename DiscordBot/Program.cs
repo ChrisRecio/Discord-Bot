@@ -38,7 +38,7 @@ namespace DiscordBot
                 Console.WriteLine("Failed To Connect");
             }
 
-            Console.ReadKey();
+            Console.ReadLine();
         }
     }
 }
