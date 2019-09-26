@@ -25,6 +25,8 @@ namespace DiscordBot
             }
         }
 
+        public static object Interception { get; internal set; }
+
         public static void RegisterTypes()
         {
             _container = new UnityContainer();
