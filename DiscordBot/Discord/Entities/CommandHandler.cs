@@ -3,25 +3,30 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Discord.Commands;
 using Discord.WebSocket;
+using Victoria;
 
 namespace DiscordBot.Discord.Entities
 {
     internal class CommandHandler
     {
         private DiscordSocketClient _client;
+        private LavaSocketClient _lavaSocketClient;
         private CommandService _commandService;
-        public async Task InitializeAsync(DiscordSocketClient client)
+
+        public async Task InitializeAsync(DiscordSocketClient client, LavaSocketClient lavaSocketClient)
         {
             _client = client;
+            _lavaSocketClient = lavaSocketClient;
             _commandService = new CommandService();
             await _commandService.AddModulesAsync(Assembly.GetEntryAssembly(), null);
             _client.MessageReceived += HandleCommandAsync;
+            await _lavaSocketClient.StartAsync(_client);
         }
 
         private async Task HandleCommandAsync(SocketMessage s)
         {
             var msg = s as SocketUserMessage;
-            if(msg == null) return;
+            if (msg == null) return;
             var context = new SocketCommandContext(_client, msg);
             int argPos = 0;
             if (msg.HasStringPrefix("$", ref argPos) || msg.HasMentionPrefix(_client.CurrentUser, ref argPos))
@@ -34,5 +39,4 @@ namespace DiscordBot.Discord.Entities
             }
         }
     }
-
 }

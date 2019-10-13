@@ -50,7 +50,7 @@ namespace DiscordBot.Discord.Modules
 
         [Command("Avatar")]
         [Summary("Returns A Users Profile Picture")]
-        public async Task Avatar([Remainder] string name)
+        public async Task Avatar()
         {
             var user = Context.Message.MentionedUsers.FirstOrDefault();
             var url = user?.GetAvatarUrl();

@@ -1,6 +1,4 @@
-﻿using System;
-using Discord.Commands;
-using Discord.WebSocket;
+﻿using Discord.WebSocket;
 using DiscordBot.Discord;
 using DiscordBot.Discord.Entities;
 using DiscordBot.Storage;
@@ -8,6 +6,7 @@ using DiscordBot.Storage.Implementations;
 using Unity;
 using Unity.Injection;
 using Unity.Resolution;
+using Victoria;
 
 namespace DiscordBot
 {
@@ -30,16 +29,25 @@ namespace DiscordBot
         public static void RegisterTypes()
         {
             _container = new UnityContainer();
-            _container.RegisterSingleton<IDataStorage, JsonStorage>();
-            _container.RegisterSingleton<ILogger, Logger>();
+
+            // Bot Connection
             _container.RegisterType<DiscordSocketClient>(new InjectionFactory(i => SocketConfig.GetDefault()));
             _container.RegisterSingleton<DiscordSocketClient>(new InjectionConstructor(typeof(DiscordSocketConfig)));
             _container.RegisterSingleton<Discord.Connection>();
+            _container.RegisterSingleton<CommandHandler>();
+
+            // Storage
+            _container.RegisterSingleton<IDataStorage, JsonStorage>();
+            _container.RegisterSingleton<ILogger, Logger>();
+
+            // Music
+            _container.RegisterSingleton<LavaSocketClient>();
         }
 
         public static T Resolve<T>()
         {
             return (T)Container.Resolve(typeof(T), string.Empty, new CompositeResolverOverride());
         }
+
     }
 }

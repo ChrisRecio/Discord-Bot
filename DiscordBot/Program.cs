@@ -4,6 +4,7 @@ using DiscordBot.Discord.Entities;
 using System.Threading.Tasks;
 using DiscordBot.Storage;
 using Discord.WebSocket;
+using Victoria;
 
 namespace DiscordBot
 {
@@ -14,23 +15,20 @@ namespace DiscordBot
             // Register Dependency Injections
             Unity.RegisterTypes();
 
+
             var storage = Unity.Resolve<IDataStorage>();
             var connection = Unity.Resolve<Connection>();
-            var handler = new CommandHandler();
+            var handler = Unity.Resolve<CommandHandler>();
             var socketClient = Unity.Resolve<DiscordSocketClient>();
+            var lavaSocketClient = Unity.Resolve<LavaSocketClient>();
 
             try
             {
-
                 await connection.ConnectAsync(new BotConfig
                 {
                     Token = storage.RestoreObject<string>("Config/BotConfig")
                 });
-                await handler.InitializeAsync(socketClient);
-
-
-
-                Console.WriteLine("Connected Successfully");
+                await handler.InitializeAsync(socketClient, lavaSocketClient);
             }
             catch (Exception)
             {
