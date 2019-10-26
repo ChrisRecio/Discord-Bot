@@ -16,10 +16,8 @@ namespace DiscordBot.Discord.Entities
         public async Task InitializeAsync(DiscordSocketClient client)
         {
             _client = client;
-            _lavaSocketClient = lavaSocketClient;
             _commandService = new CommandService();
             _client.MessageReceived += HandleCommandAsync;
-            //_client.Ready += OnReady;
             await _commandService.AddModulesAsync(Assembly.GetEntryAssembly(), null);
         }
 
@@ -38,11 +36,5 @@ namespace DiscordBot.Discord.Entities
                 }
             }
         }
-
-        private async Task OnReady()
-        {
-            await _lavaSocketClient.StartAsync(_client);
-        }
-
     }
 }
