@@ -13,14 +13,14 @@ namespace DiscordBot.Discord.Entities
         private LavaSocketClient _lavaSocketClient;
         private CommandService _commandService;
 
-        public async Task InitializeAsync(DiscordSocketClient client, LavaSocketClient lavaSocketClient)
+        public async Task InitializeAsync(DiscordSocketClient client)
         {
             _client = client;
             _lavaSocketClient = lavaSocketClient;
             _commandService = new CommandService();
-            await _commandService.AddModulesAsync(Assembly.GetEntryAssembly(), null);
             _client.MessageReceived += HandleCommandAsync;
-            await _lavaSocketClient.StartAsync(_client);
+            //_client.Ready += OnReady;
+            await _commandService.AddModulesAsync(Assembly.GetEntryAssembly(), null);
         }
 
         private async Task HandleCommandAsync(SocketMessage s)
@@ -38,5 +38,11 @@ namespace DiscordBot.Discord.Entities
                 }
             }
         }
+
+        private async Task OnReady()
+        {
+            await _lavaSocketClient.StartAsync(_client);
+        }
+
     }
 }

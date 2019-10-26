@@ -20,7 +20,6 @@ namespace DiscordBot
             var connection = Unity.Resolve<Connection>();
             var handler = Unity.Resolve<CommandHandler>();
             var socketClient = Unity.Resolve<DiscordSocketClient>();
-            var lavaSocketClient = Unity.Resolve<LavaSocketClient>();
 
             try
             {
@@ -28,7 +27,7 @@ namespace DiscordBot
                 {
                     Token = storage.RestoreObject<string>("Config/BotConfig")
                 });
-                await handler.InitializeAsync(socketClient, lavaSocketClient);
+                await handler.InitializeAsync(socketClient);
             }
             catch (Exception)
             {

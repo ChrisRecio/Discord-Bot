@@ -41,7 +41,6 @@ namespace DiscordBot
             _container.RegisterSingleton<ILogger, Logger>();
 
             // Music
-            _container.RegisterSingleton<LavaSocketClient>();
         }
 
         public static T Resolve<T>()
