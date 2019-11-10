@@ -20,7 +20,7 @@ namespace DiscordBot
             var connection = Unity.Resolve<Connection>();
             var handler = Unity.Resolve<CommandHandler>();
             var socketClient = Unity.Resolve<DiscordSocketClient>();
-            var audioService = Unity.Resolve<AudioService>();
+            //var audioService = Unity.Resolve<AudioService>();
 
             try
             {
@@ -29,7 +29,7 @@ namespace DiscordBot
                     Token = storage.RestoreObject<string>("Config/BotConfig")
                 });
                 await handler.InitializeAsync(socketClient);
-                await audioService.InitializeAsync();
+                //await audioService.InitializeAsync();
             }
             catch (Exception)
             {
