@@ -3,6 +3,7 @@ using DiscordBot.Discord;
 using DiscordBot.Discord.Entities;
 using DiscordBot.Storage;
 using DiscordBot.Storage.Implementations;
+using StreamMusicBot.Services;
 using Unity;
 using Unity.Injection;
 using Unity.Resolution;
@@ -41,6 +42,10 @@ namespace DiscordBot
             _container.RegisterSingleton<ILogger, Logger>();
 
             // Music
+            _container.RegisterSingleton<LavaSocketClient>();
+            _container.RegisterSingleton<LavaRestClient>();
+            _container.RegisterSingleton<AudioService>();
+            _container.RegisterSingleton<LogService>();
         }
 
         public static T Resolve<T>()

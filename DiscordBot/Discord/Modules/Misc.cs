@@ -1,8 +1,6 @@
-﻿
-using System;
+﻿using System;
 using Discord.Commands;
 using System.Net;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Discord;

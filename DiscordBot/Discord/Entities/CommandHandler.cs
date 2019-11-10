@@ -3,14 +3,12 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Discord.Commands;
 using Discord.WebSocket;
-using Victoria;
 
 namespace DiscordBot.Discord.Entities
 {
     internal class CommandHandler
     {
         private DiscordSocketClient _client;
-        private LavaSocketClient _lavaSocketClient;
         private CommandService _commandService;
 
         public async Task InitializeAsync(DiscordSocketClient client)
