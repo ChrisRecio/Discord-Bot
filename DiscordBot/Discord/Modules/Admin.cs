@@ -9,7 +9,7 @@ namespace DiscordBot.Discord.Modules
 {
     public class Admin : ModuleBase<SocketCommandContext>
     {
-        // Admin Embed Color RGB(116, 255, 56)
+        private static readonly Color embedColor = new Color(116, 255, 56);
 
         // Chat Commands
         #region Chat Commands
@@ -34,20 +34,19 @@ namespace DiscordBot.Discord.Modules
             var embed = new EmbedBuilder();
             embed.WithTitle("Message From " + Context.User.Username);
             embed.WithDescription(message);
-            embed.WithColor(new Color(116, 255, 56));
+            embed.WithColor(embedColor);
 
             await Context.Channel.SendMessageAsync("", false, embed.Build());
         }
 
         #endregion
 
-
         // Edit The Bot
         #region Edit The Bot
 
         [Command("Game"), Alias("ChangeGame", "SetGame")]
         [Summary("Change what the bot is currently playing.")]
-        [RequireOwner]
+        [RequireUserPermission(GuildPermission.Administrator)]
         public async Task SetGame([Remainder] string gameName)
         {
             await Context.Client.SetGameAsync(gameName);
@@ -56,7 +55,7 @@ namespace DiscordBot.Discord.Modules
 
         [Command("Nick")]
         [Summary("Changes the Bots Nickname on the current guild.")]
-        [RequireOwner]
+        [RequireUserPermission(GuildPermission.Administrator)]
         public async Task Nick(string n)
         {
             var user = Context.Guild.GetUser(512340575039651840);

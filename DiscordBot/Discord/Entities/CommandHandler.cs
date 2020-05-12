@@ -16,6 +16,7 @@ namespace DiscordBot.Discord.Entities
             _client = client;
             _commandService = new CommandService();
             _client.MessageReceived += HandleCommandAsync;
+
             await _commandService.AddModulesAsync(Assembly.GetEntryAssembly(), null);
         }
 

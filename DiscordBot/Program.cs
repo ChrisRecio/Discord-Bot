@@ -4,7 +4,6 @@ using DiscordBot.Discord.Entities;
 using System.Threading.Tasks;
 using DiscordBot.Storage;
 using Discord.WebSocket;
-using StreamMusicBot.Services;
 
 namespace DiscordBot
 {
@@ -20,7 +19,6 @@ namespace DiscordBot
             var connection = Unity.Resolve<Connection>();
             var handler = Unity.Resolve<CommandHandler>();
             var socketClient = Unity.Resolve<DiscordSocketClient>();
-            //var audioService = Unity.Resolve<AudioService>();
 
             try
             {
@@ -29,7 +27,6 @@ namespace DiscordBot
                     Token = storage.RestoreObject<string>("Config/BotConfig")
                 });
                 await handler.InitializeAsync(socketClient);
-                //await audioService.InitializeAsync();
             }
             catch (Exception)
             {

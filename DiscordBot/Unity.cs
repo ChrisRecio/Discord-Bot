@@ -7,7 +7,6 @@ using StreamMusicBot.Services;
 using Unity;
 using Unity.Injection;
 using Unity.Resolution;
-using Victoria;
 
 namespace DiscordBot
 {
@@ -42,8 +41,6 @@ namespace DiscordBot
             _container.RegisterSingleton<ILogger, Logger>();
 
             // Music
-            _container.RegisterSingleton<LavaSocketClient>();
-            _container.RegisterSingleton<LavaRestClient>();
             _container.RegisterSingleton<AudioService>();
             _container.RegisterSingleton<LogService>();
         }

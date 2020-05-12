@@ -6,13 +6,15 @@ using Newtonsoft.Json;
 using Discord;
 using System.Linq;
 using System.Net.Http;
+using Discord.WebSocket;
 
 namespace DiscordBot.Discord.Modules
 {
     public class Misc : ModuleBase<SocketCommandContext>
     {
-        // User Embed Color RGB(66, 176, 255)
-
+        private static readonly Color embedColor = new Color(66, 176, 255);
+        private static readonly char[] _letters = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' };
+        private static readonly string[] _morseLetters = { ".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..", ".---", "-.-", ".-..", "--", "-.", "---", ".--.", "--.-", ".-.", "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--..", "-----", ".----", "..---", "...--", "....-", ".....", "-....", "--...", "---..", "----.", "    ", "--..--", ".-.-.-", "----" };
 
         // Chat Commands
         #region Chat Commands
@@ -43,16 +45,44 @@ namespace DiscordBot.Discord.Modules
         [Summary("Walter")]
         public async Task Walter()
         {
-            await ReplyAsync("Walter");
+            var embed = new EmbedBuilder();
+            embed.WithTitle(Context.Client.CurrentUser.Username);
+            embed.WithImageUrl(Context.Client.CurrentUser.GetAvatarUrl());
+            embed.WithColor(embedColor);
+
+            await Context.Channel.SendMessageAsync("", false, embed.Build());
         }
 
         [Command("Avatar")]
         [Summary("Returns A Users Profile Picture")]
-        public async Task Avatar()
+        public async Task Avatar(SocketGuildUser user = null)
         {
-            var user = Context.Message.MentionedUsers.FirstOrDefault();
-            var url = user?.GetAvatarUrl();
-            await ReplyAsync($"{user?.Username}'s Avatar is: {url?.Replace("size=128", "size=1024")}");
+            user = user ?? (SocketGuildUser)Context.User;
+
+            var embed = new EmbedBuilder();
+            embed.WithTitle(user.Username);
+            embed.WithImageUrl(user.GetAvatarUrl().Replace("size=128", "size=2048"));
+            embed.WithColor(embedColor);
+
+            await Context.Channel.SendMessageAsync("", false, embed.Build());
+        }
+
+        [Command("Info")]
+        [Summary("Returns A Users Profile Information")]
+        public async Task AccountInformation(SocketGuildUser user = null)
+        {
+            user = user ?? (SocketGuildUser)Context.User;
+
+            var embed = new EmbedBuilder()
+                .WithAuthor($"{user.Username}'s account information", user.GetAvatarUrl())
+                .AddField("Joined at: ", user.JoinedAt.Value.DateTime.ToString())
+                .WithColor(embedColor)
+                .WithCurrentTimestamp()
+                .WithFooter($"Requested by {Context.User.Username}")
+                .WithThumbnailUrl(user.GetAvatarUrl())
+                .Build();
+
+            await Context.Channel.SendMessageAsync(Context.User.Mention, false, embed);
         }
 
         [Command("Ascii")]
@@ -79,6 +109,29 @@ namespace DiscordBot.Discord.Modules
             {
                 await ReplyAsync(e.Message);
             }
+        }
+
+        [Command("Morse")]
+        [Summary("Translate Message To Morse Code")]
+        public async Task Echo([Remainder] string message)
+        {
+            string newText = "";
+
+            message = message.ToLower();
+
+            foreach (var t in message)
+            {
+                for (short j = 0; j < 37; j++)
+                {
+                    if (t == _letters[j])
+                    {
+                        newText += _morseLetters[j];
+                        newText += "   ";
+                        break;
+                    }
+                }
+            }
+            await ReplyAsync(newText);
         }
 
         [Command("8ball"), Alias("EightBall")]
@@ -166,7 +219,7 @@ namespace DiscordBot.Discord.Modules
             var embed = new EmbedBuilder();
             embed.WithTitle("Random Cat Fact");
             embed.WithDescription(fact);
-            embed.WithColor(new Color(66, 176, 255));
+            embed.WithColor(embedColor);
 
             await Context.Channel.SendMessageAsync("", false, embed.Build());
 
@@ -189,7 +242,7 @@ namespace DiscordBot.Discord.Modules
             var embed = new EmbedBuilder();
             embed.WithTitle("Random Cat");
             embed.WithImageUrl(datImage);
-            embed.WithColor(new Color(66, 176, 255));
+            embed.WithColor(embedColor);
 
             await Context.Channel.SendMessageAsync("", false, embed.Build());
 
@@ -212,7 +265,7 @@ namespace DiscordBot.Discord.Modules
             var embed = new EmbedBuilder();
             embed.WithTitle("Random Dog");
             embed.WithImageUrl(dogImage);
-            embed.WithColor(new Color(66, 176, 255));
+            embed.WithColor(embedColor);
 
             await Context.Channel.SendMessageAsync("", false, embed.Build());
 
@@ -238,7 +291,7 @@ namespace DiscordBot.Discord.Modules
             var embed = new EmbedBuilder();
             embed.WithTitle("Random Doge");
             embed.WithImageUrl(dogeImage);
-            embed.WithColor(new Color(66, 176, 255));
+            embed.WithColor(embedColor);
 
             await Context.Channel.SendMessageAsync("", false, embed.Build());
 
